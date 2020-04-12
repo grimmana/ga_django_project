@@ -1,0 +1,9 @@
+<!-- /part_django/part/templates/part/item_list.html -->
+<h2>Items <a href="">(+)</a></h2>
+<ul>
+  {% for item in items %}
+  <li>
+    <a href="">{{ item.name }}</a>
+  </li>
+  {% endfor %}
+</ul>

@@ -11,11 +11,13 @@ Features:
 
 
 Technologies used:
-Python
-SQL
 Django
 GitHub
+Python
+SQL
+PostgreSQL
 NodeJS
+Virtual environments
 WireFrame
 
 Deployment to Heroku 
@@ -24,14 +26,18 @@ Issues and resolutions:
 Contribute
 ## Additional Resources
 
-- [Django Docs: Models](https://docs.djangoproject.com/en/2.0/topics/db/models/)
-- [Django Docs: Models & Databases](https://docs.djangoproject.com/en/2.0/topics/db/)
-- [How to Create Django Models](https://www.digitalocean.com/community/tutorials/how-to-create-django-models)
-- [Django Docs: Migrations](https://docs.djangoproject.com/en/2.0/topics/migrations/)
-- [Django Docs: Writing Database Migrations](https://docs.djangoproject.com/en/2.0/howto/writing-migrations/)
-- [Django Docs: Admin](https://docs.djangoproject.com/en/2.1/ref/django-admin/)
-- [Django Docs: Providing initial data for models](https://docs.djangoproject.com/en/2.1/howto/initial-data/)
-- [Django Extensions](https://github.com/django-extensions/django-extensions)
+- [GA Docs: Django models](https://git.generalassemb.ly/jdr-0127/django-models)
+
+    - [Django Docs: Models](https://docs.djangoproject.com/en/2.0/topics/db/models/)
+    - [Django Docs: Models & Databases](https://docs.djangoproject.com/en/2.0/topics/db/)
+    - [How to Create Django Models](https://www.digitalocean.com/community/tutorials/how-to-create-django-models)
+    - [Django Docs: Migrations](https://docs.djangoproject.com/en/2.0/topics/migrations/)
+    - [Django Docs: Writing Database Migrations](https://docs.djangoproject.com/en/2.0/howto/writing-migrations/)
+    - [Django Docs: Admin](https://docs.djangoproject.com/en/2.1/ref/django-admin/)
+    - [Django Docs: Providing initial data for models](https://docs.djangoproject.com/en/2.1/howto/initial-data/)
+    - [Django Extensions](https://github.com/django-extensions/django-extensions)
+
+- [GA Docs: Django views and templates](https://git.generalassemb.ly/jdr-0127/django-views-and-templates)
 
 
 
@@ -344,19 +350,116 @@ To get to a python shell, you can now run:
 ```
 $ python3 manage.py shell_plus
 ```
+
 To exit:
 
 ```
->>> quit()
+quit()
 ```
 
 For a nicer interface install ipython:
-```
+
+```sh
 $ python3 -m pip install ipython
 ```
 
 Now you can enter it:"
 
-```
+```sh
 python3 manage.py shell_plus --ipython
 ```
+
+# Django Views & Templates
+
+Create the Item and Item_part views in /part_jdango/part/views.py: 
+
+```python
+# /part_jdango/part/views.py
+from django.shortcuts import render
+from .models import Item, Item_part
+
+def item_list(request):
+    items = Item.objects.all()
+    return render(request, 'part/item_list.html', {'items': items})
+
+def item_part_list(request):
+    item_parts = Item_part.objects.all()
+    return render(request, 'part/item_part_list.html', {'item_parts': item_parts})
+```
+
+# URLs
+
+Edit /part_jdango/part_jdango/urls.py: Add to the first line import - `include` 
+
+```python
+# part_django/part_django/urls.py
+from django.conf.urls import include
+from django.urls import path
+from django.contrib import admin
+
+urlpatterns = [
+    path('admin', admin.site.urls),
+    path('', include('part.urls')),
+]
+```
+
+Create file /part_jdango/part/urls.py that contains the app path, so that it looks like:
+
+```python
+# /part_django/part/urls.py
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('', views.item_list, name='item_list'),
+    path('/item_parts', views.item_part_list, name='item_part_list')
+]
+```
+
+# Templates and Django Templating Language
+
+Create the templates that will be used to render the views.
+
+In the directory /part_django/part/: create a `templates` directory and a `part` subdirectory.
+
+In this path /part_django/part/templates/part/: add a new file
+`item_list.html` with the following code:
+
+```html
+<!-- /part_django/part/templates/part/item_list.html -->
+<h2>Items <a href="">(+)</a></h2>
+<ul>
+  {% for item in items %}
+  <li>
+    <a href="">{{ item.name }}</a>
+  </li>
+  {% endfor %}
+</ul>
+```
+
+Ensure the server is currently running or start the server:
+
+```
+python3 manage.py runserver 8000
+```
+Check the following paths in the browser
+on the webpage you should see the list of Items and 
+
+`localhost:8000`  Items
+`http://localhost:8000/item_parts/` Items_parts
+
+
+In this path /part_django/part/templates/part/: add a new file
+`item_part_list.html` with the following code:
+
+```html
+<h2>Item_parts</h2>
+<ul>
+  {% for item_part in item_parts %}
+  <li>
+    <a href="">{{ item_part.name }}</a>
+  </li>
+  {% endfor %}
+</ul>
+```
+
