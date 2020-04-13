@@ -729,3 +729,82 @@ add the following code into `base.html`:
     {% block content %} {% endblock %}
   </body>
 </html>
+```
+
+# Item Create form
+
+In the directory /part_django/part/: create a new file `forms.py` with the following code:
+
+
+```python
+# part/forms.py
+from django import forms
+from .models import Item, Item_part
+
+class ItemForm(forms.ModelForm):
+
+    class Meta:
+        model = Item
+        fields = ('name', 'ident',)
+```
+
+In this path /part_django/part: 
+add the following code into `views.py`:
+
+```python
+# part/views.py
+from django.shortcuts import render, redirect
+
+from .forms import ItemForm
+
+def item_create(request):
+    if request.method == 'POST':
+        form = ItemForm(request.POST)
+        if form.is_valid():
+            item = form.save()
+            return redirect('item_detail', pk=item.pk)
+    else:
+        form = ItemForm()
+    return render(request, 'part/item_form.html', {'form': form})
+```
+
+Item_part create
+URL: in the /part_django/part/urls.py file, add the following code:
+
+```python
+# part/urls.py
+path('items/new', views.items_create, name='item_create'),
+```
+
+Item form
+TEMPLATE: in this path /part_django/part/templates/part/: 
+create a new file `item_form.html` with the following code:
+
+```html
+<!-- part/templates/part/item_form.html -->
+{% extends 'part/base.html' %} {% block content %}
+<h1>New Item</h1>
+<form method="POST" class="item-form">
+  {% csrf_token %} {{ form.as_p }}
+  <button type="submit" class="save btn btn-default">Save</button>
+</form>
+{% endblock %}
+```
+
+Item create
+URL/href: in the /part_django/part/item_list.html file, add the following code on the h2 line:
+
+```html
+<!-- part/item_list.html -->
+{% extends 'part/base.html' %} {% block content %}
+<h2>Items <a href="{% url 'item_create' %}">(+)</a></h2>
+<ul>
+  {% for item in items %}
+  <li>
+    <a href="{% url 'item_detail' pk=item.pk %}">
+      {{ item.name }}</a>
+  </li>
+  {% endfor %}
+</ul>
+{% endblock %}
+```
