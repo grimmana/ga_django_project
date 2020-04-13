@@ -424,7 +424,7 @@ Create the templates that will be used to render the views.
 
 In the directory /part_django/part/: create a `templates` directory and a `part` subdirectory.
 
-In this path /part_django/part/templates/part/: add a new file
+In this path /part_django/part/templates/part/: create a new file
 `item_list.html` with the following code:
 
 ```html
@@ -440,7 +440,7 @@ In this path /part_django/part/templates/part/: add a new file
 ```
 
 In this path /part_django/part/templates/part/: 
-add a new file
+create  a new file
 `item_part_list.html` with the following code:
 
 ```html
@@ -488,7 +488,7 @@ path('items/<int:pk>', views.item_detail, name='item_detail'),
 
 Item detail
 TEMPLATE: in this path /part_django/part/templates/part/: 
-add a new file `item_detail.html` with the following code:
+create a new file `item_detail.html` with the following code:
 
 ```html
 <!-- part/item_detail.html -->
@@ -536,7 +536,7 @@ path('item_parts/<int:pk>', views.item_part_detail, name='item_part_detail')
 
 Item_part detail 
 TEMPLATE: in this path /part_django/part/templates/part/: 
-add a new file `item_part_detail.html` with the following code:
+Create a new file `item_part_detail.html` with the following code:
 
 ```html
 <h2>{{ item_part.name }} <a href="">(edit)</a></h2>
@@ -560,14 +560,172 @@ HTML/HREF: Go back and add hrefs between the li tags in: /part_django/part/templ
   {{ item_part.name }}
 </a>
 ```
-Ensure the server is currently running or start the server:
 
-```
-python3 manage.py runserver 8000
-```
-Check the following paths (listed in 
-/part_django/part/urls.py) in the browser,
-on the webpage you should see the lists of: 
+# base.html and CSS
 
-`localhost:8000`  Items
-`http://localhost:8000/item_parts/` Items_parts
+In this path /part_django/part/templates/part/: 
+create a new file
+`base.html` with the following code:
+
+```html
+<!-- part/templates/part/base.html -->
+<html>
+  <head>
+    <title>Item</title>
+  </head>
+  <body>
+    <h1>Item</h1>
+    <nav>
+      <a href="/item_parts">Item_parts</a>
+      <a href="/">Items</a>
+    </nav>
+    {% block content %} {% endblock %}
+  </body>
+</html>
+```
+
+Switch to: Item list 
+HTML/code: Go back and add code in: /part_django/part/templates/part/item_list.html
+
+Each template is going to extend the base adding `{% extends 'tunr/base.html' %}` to the beginning of the file.
+
+The content between `{% block content %}` and
+`{% endblock %}` will render in place of the content block in the `base.html`
+file.
+
+```html
+<!-- part/templates/part/item_list.html -->
+{% extends 'part/base.html' %} {% block content %}
+<h2>Items <a href="{% url 'item_create' %}">(+)</a></h2>
+<ul>
+  {% for item in items %}
+  <li>
+    <a href="{% url 'item_detail' pk=item.id %}">{{ item.name }}</a>
+  </li>
+  {% endfor %}
+</ul>
+{% endblock %}
+```
+
+In the directory /part_django/part/: create a `static` directory and a `css` subdirectory.
+
+In this path /part_django/part/static/css/: create a new file `part.css` with the following code:
+
+```css
+/* part/static/css/part.css */
+body {
+  font-family: "Helvetica Neue", sans-serif;
+  max-width: 50em;
+  margin: auto;
+  padding: 2em 1em;
+}
+
+nav a {
+  border: 1px solid black;
+  margin: 0.5em;
+  padding: 0.5em;
+  background-color: #eeeeee;
+}
+
+nav a:hover {
+  background-color: orange;
+  color: blue;
+}
+
+a,
+a:visited {
+  text-decoration: none;
+  color: blue;
+}
+
+a:hover {
+  background-color: #ccc;
+}
+
+ul {
+  list-style-type: none;
+}
+
+li {
+  margin: 0.25em;
+}
+
+h1 {
+  font: inherit;
+  color: inherit;
+  letter-spacing: -0.05em;
+  text-decoration: none;
+  border-bottom: 1px solid black;
+}
+
+h2 > a {
+  font-size: 0.75em;
+}
+
+input {
+  display: block;
+  margin: 5px 0 20px 0;
+  padding: 9px;
+  border: solid 1px black;
+  width: 300px;
+  background: whitesmoke;
+}
+
+input[type="submit"],
+a.delete {
+  width: auto;
+  padding: 9px 15px;
+  background-color: gray;
+  border: 0;
+  font-size: 14px;
+  color: #ffffff;
+}
+
+a.delete {
+  background-color: red;
+}
+
+.item-photo {
+  width: 400px;
+}
+
+.user-info {
+  float: right;
+}
+
+a.fav {
+  text-decoration: none;
+  color: red;
+}
+
+a.no-fav {
+  text-decoration: none;
+  color: black;
+}
+
+.fav:visited,
+.no-fav:visited {
+  text-decoration: none;
+}
+```
+
+In this path /part_django/part/templates/part/: 
+add the following code into `base.html`:
+
+```html
+<!-- part/templates/part/base.html -->
+{% load static %}
+<html>
+  <head>
+    <title>Item</title>
+    <link rel="stylesheet" href="{% static 'css/tunr.css' %}" />
+  </head>
+  <body>
+    <h1>Item</h1>
+    <nav>
+      <a href="/item_parts">Item_parts</a>
+      <a href="/">Items</a>
+    </nav>
+    {% block content %} {% endblock %}
+  </body>
+</html>

@@ -1,0 +1,16 @@
+<!-- part/templates/part/base.html -->
+{% load static %}
+<html>
+  <head>
+    <title>Item</title>
+    <link rel="stylesheet" href="{% static 'css/tunr.css' %}" />
+  </head>
+  <body>
+    <h1>Item</h1>
+    <nav>
+      <a href="/item_parts">Item_parts</a>
+      <a href="/">Items</a>
+    </nav>
+    {% block content %} {% endblock %}
+  </body>
+</html>
