@@ -37,7 +37,7 @@ def item_part_create(request):
             return redirect('item_part_detail', pk=item_part.pk)
     else:
         form = Item_partForm()
-    return render(request, 'part/item_partform.html', {'form': form}) 
+    return render(request, 'part/item_part_form.html', {'form': form}) 
 
 def item_edit(request, pk):
     item = Item.objects.get(pk=pk)

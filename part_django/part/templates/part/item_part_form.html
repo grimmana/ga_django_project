@@ -1,6 +1,6 @@
 <!-- part/item_part_form.html -->
 {% extends 'part/base.html' %} {% block content %}
-<h1>New Item_part</h1>
+<h1>Item_part</h1>
 <form method="POST" class="item_part-form">
   {% csrf_token %} {{ form.as_p }}
   <button type="submit" class="save btn btn-default">Save</button>

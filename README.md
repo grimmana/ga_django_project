@@ -1032,3 +1032,17 @@ file, add the following code after h3 :
   <a href="{% url 'item_part_delete' pk=item_part.pk %}">DELETE</a>
 </div>
 ```
+
+Ensure the server is currently running or start the server:
+
+```
+python3 manage.py runserver 8000
+```
+Check the following paths (listed in 
+/part_django/part/urls.py) in the browser,
+on the webpage you should see the lists of: 
+
+`localhost:8000`  Items
+`http://localhost:8000/item_parts/` Items_parts
+
+Check Views
