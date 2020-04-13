@@ -1,24 +1,30 @@
 from django.shortcuts import render, redirect
 from .models import Item, Item_part
 from .forms import ItemForm, Item_partForm
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
+@login_required
 def item_list(request):
     items = Item.objects.all()
     return render(request, 'part/item_list.html', {'items': items})
 
+@login_required
 def item_part_list(request):
     item_parts = Item_part.objects.all()
     return render(request, 'part/item_part_list.html', {'item_parts': item_parts})
 
+@login_required
 def item_detail(request, pk):
     item = Item.objects.get(id=pk)
     return render(request, 'part/item_detail.html', {'item': item})
 
+@login_required
 def item_part_detail(request, pk):
     item_part = Item_part.objects.get(id=pk)
     return render(request, 'part/item_part_detail.html', {'item_part': item_part}) 
 
+@login_required
 def item_create(request):
     if request.method == 'POST':
         form = ItemForm(request.POST)
@@ -29,6 +35,7 @@ def item_create(request):
         form = ItemForm()
     return render(request, 'part/item_form.html', {'form': form}) 
 
+@login_required
 def item_part_create(request):
     if request.method == 'POST':
         form = Item_partForm(request.POST)
@@ -39,6 +46,7 @@ def item_part_create(request):
         form = Item_partForm()
     return render(request, 'part/item_part_form.html', {'form': form}) 
 
+@login_required
 def item_edit(request, pk):
     item = Item.objects.get(pk=pk)
     if request.method == "POST":
@@ -50,6 +58,7 @@ def item_edit(request, pk):
         form = ItemForm(instance=item)
     return render(request, 'part/item_form.html', {'form': form}) 
 
+@login_required
 def item_part_edit(request, pk):
     item_part = Item_part.objects.get(pk=pk)
     if request.method == "POST":
@@ -61,10 +70,12 @@ def item_part_edit(request, pk):
         form = Item_partForm(instance=item_part)
     return render(request, 'part/item_part_form.html', {'form': form})
 
+@login_required
 def item_delete(request, pk):
     Item.objects.get(id=pk).delete()
     return redirect('item_list')
 
+@login_required
 def item_part_delete(request, pk):
     Item_part.objects.get(id=pk).delete()
     return redirect('item_part_list')
