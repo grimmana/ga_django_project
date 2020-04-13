@@ -37,4 +37,15 @@ def item_part_create(request):
             return redirect('item_part_detail', pk=item_part.pk)
     else:
         form = Item_partForm()
-    return render(request, 'part/item_partform.html', {'form': form})  
+    return render(request, 'part/item_partform.html', {'form': form}) 
+
+def item_edit(request, pk):
+    item = Item.objects.get(pk=pk)
+    if request.method == "POST":
+        form = ItemForm(request.POST, instance=item)
+        if form.is_valid():
+            item = form.save()
+            return redirect('item_detail', pk=item.pk)
+    else:
+        form = ItemForm(instance=item)
+    return render(request, 'part/item_form.html', {'form': form}) 

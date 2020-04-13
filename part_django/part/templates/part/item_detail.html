@@ -1,5 +1,5 @@
 <!-- part/item_detail.html -->
-<h2>{{ item.name }} <a href="">(edit)</a></h2>
+<h2>{{ item.name }} <a href="{% url 'item_edit' pk=item.pk %}">(edit)</a></h2>
 
 <h3>Item_parts <a href="{% url 'item_create' %}">(+)</a></h3>
 <ul>

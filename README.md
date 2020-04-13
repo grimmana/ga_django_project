@@ -894,3 +894,41 @@ add the following code to h3 in `item_detail.html` :
 ```html
 <h3>Item_parts <a href="{% url 'item_create' %}">(+)</a></h3>
 ```
+
+# Item Edit form
+
+In this path /part_django/part: 
+add the following code into `views.py`:
+
+```python
+# part/views.py
+def item_edit(request, pk):
+    item = Item.objects.get(pk=pk)
+    if request.method == "POST":
+        form = ItemForm(request.POST, instance=item)
+        if form.is_valid():
+            item = form.save()
+            return redirect('item_detail', pk=item.pk)
+    else:
+        form = ItemForm(instance=item)
+    return render(request, 'part/item_form.html', {'form': form})
+```
+
+Item edit form
+URL: in the /part_django/part/urls.py file, add the following code:
+
+```python
+# part/urls.py
+path('items/<int:pk>/edit', views.item_edit, name='item_edit'),
+```
+
+Item edit form
+URL/href: in the /part_django/part/templates/part/item_detail.html
+file, add the following code to the h2 :
+
+```html
+<!-- part/templates/part/item_detail.html -->
+<h2>
+  {{ item.name }} <a href="{% url 'item_edit' pk=item.pk %}">(edit)</a>
+</h2>
+```
