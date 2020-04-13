@@ -1,7 +1,7 @@
 <!-- part/item_detail.html -->
 <h2>{{ item.name }} <a href="">(edit)</a></h2>
 
-<h3>Item_parts <a href="">(+)</a></h3>
+<h3>Item_parts <a href="{% url 'item_create' %}">(+)</a></h3>
 <ul>
   {% for item_parts in item.item_parts.all %}
   <li>

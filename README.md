@@ -808,3 +808,89 @@ URL/href: in the /part_django/part/item_list.html file, add the following code o
 </ul>
 {% endblock %}
 ```
+
+# Item_part Create form
+
+In the directory /part_django/part/: add the following code to `forms.py`:
+
+
+```python
+# part/forms.py
+from django import forms
+from .models import Item, Item_part
+
+class Item_partForm(forms.ModelForm):
+
+    class Meta:
+        model = Item_part
+        fields = ('name', 'number', 'notes',)
+```
+
+In this path /part_django/part: 
+add the following code into `views.py`:
+
+```python
+# part/views.py
+from django.shortcuts import render, redirect
+
+from .forms import ItemForm, Item_partForm
+
+def item_part_create(request):
+    if request.method == 'POST':
+        form = Item_partForm(request.POST)
+        if form.is_valid():
+            item_part = form.save()
+            return redirect('item_part_detail', pk=item_part.pk)
+    else:
+        form = Item_partForm()
+    return render(request, 'part/item_part_form.html', {'form': form})
+```
+
+Item_part create
+URL: in the /part_django/part/urls.py file, add the following code:
+
+```python
+# part/urls.py
+path('item_parts/new', views.item_part_create, name='item_part_create'),
+```
+
+Item_part form
+TEMPLATE: in this path /part_django/part/templates/part/: 
+create a new file `item_part_form.html` with the following code:
+
+```html
+<!-- part/templates/part/item_part_form.html -->
+{% extends 'part/base.html' %} {% block content %}
+<h1>New Item_part</h1>
+<form method="POST" class="item_part-form">
+  {% csrf_token %} {{ form.as_p }}
+  <button type="submit" class="save btn btn-default">Save</button>
+</form>
+{% endblock %}
+```
+
+Item_part create
+URL/href: in the /part_django/part/item_part_list.html file, add the following code on the h2 line:
+
+```html
+<!-- part/item_part_list.html -->
+{% extends 'part/base.html' %} {% block content %}
+<h2>Items_parts <a href="{% url 'item_part_create' %}">(+)</a></h2>
+<ul>
+  {% for item_part in items_parts %}
+  <li>
+    <a href="{% url 'item_part_detail' pk=item_part.pk %}">
+      {{ item_part.name }}</a>
+  </li>
+  {% endfor %}
+</ul>
+{% endblock %}
+```
+
+Item detail
+TEMPLATE: in this path /part_django/part/templates/part/: 
+add the following code to h3 in `item_detail.html` :
+
+```html
+<h3>Item_parts <a href="{% url 'item_create' %}">(+)</a></h3>
+```

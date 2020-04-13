@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import Item, Item_part
-from .forms import ItemForm
+from .forms import ItemForm, Item_partForm
 # Create your views here.
 
 def item_list(request):
@@ -27,4 +27,14 @@ def item_create(request):
             return redirect('item_detail', pk=item.pk)
     else:
         form = ItemForm()
-    return render(request, 'part/item_form.html', {'form': form})   
+    return render(request, 'part/item_form.html', {'form': form}) 
+
+def item_part_create(request):
+    if request.method == 'POST':
+        form = Item_partForm(request.POST)
+        if form.is_valid():
+            item_part = form.save()
+            return redirect('item_part_detail', pk=item_part.pk)
+    else:
+        form = Item_partForm()
+    return render(request, 'part/item_partform.html', {'form': form})  
