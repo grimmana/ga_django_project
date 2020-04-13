@@ -970,3 +970,65 @@ file, add the following code to the h2 :
   {{ item_part.name }} <a href="{% url 'item_part_edit' pk=item_part.pk %}">(edit)</a>
 </h2>
 ```
+
+# Item delete form
+
+In this path /part_django/part: 
+add the following code into `views.py`:
+
+```python
+# part/views.py
+def item_delete(request, pk):
+    Item.objects.get(id=pk).delete()
+    return redirect('item_list')
+```
+
+Item delete form
+URL: in the /part_django/part/urls.py file, add the following code:
+
+```python
+# part/urls.py
+path('items/<int:pk>/delete', views.item_delete, name='item_delete'),
+```
+
+Item detail delete form
+URL/href: in the /part_django/part/templates/part/item_detail.html
+file, add the following code after h3 :
+
+```python
+# templates/part/item_detail.html
+<div>
+  <a href="{% url 'item_delete' pk=item.pk %}">DELETE</a>
+</div>
+```
+
+# Item_part delete form
+
+In this path /part_django/part: 
+add the following code into `views.py`:
+
+```python
+# part/views.py
+def item_part_delete(request, pk):
+    Item_part.objects.get(id=pk).delete()
+    return redirect('item_part_list')
+```
+
+Item_part delete form
+URL: in the /part_django/part/urls.py file, add the following code:
+
+```python
+# part/urls.py
+path('item_parts/<int:pk>/delete', views.item_part_delete, name='item_part_delete'),
+```
+
+Item_part detail delete form
+URL/href: in the /part_django/part/templates/part/item_part_detail.html
+file, add the following code after h3 :
+
+```python
+# templates/part/item_part_detail.html
+<div>
+  <a href="{% url 'item_part_delete' pk=item_part.pk %}">DELETE</a>
+</div>
+```

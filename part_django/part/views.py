@@ -60,3 +60,11 @@ def item_part_edit(request, pk):
     else:
         form = Item_partForm(instance=item_part)
     return render(request, 'part/item_part_form.html', {'form': form})
+
+def item_delete(request, pk):
+    Item.objects.get(id=pk).delete()
+    return redirect('item_list')
+
+def item_part_delete(request, pk):
+    Item_part.objects.get(id=pk).delete()
+    return redirect('item_part_list')

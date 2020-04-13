@@ -1,2 +1,5 @@
 <h2>{{ item_part.name }} <a href="{% url 'item_part_edit' pk=item_part.pk %}">(edit)</a></h2>
 <h3>By: {{ item_part.item.name }}</h3>
+<div>
+    <a href="{% url 'item_part_delete' pk=item_part.pk %}">DELETE</a>
+  </div>
