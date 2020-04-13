@@ -1,24 +1,27 @@
 <!-- part/templates/part/base.html -->
 {% load static %}
 <html>
-  <head>
-    <title>Item</title>
-    <link rel="stylesheet" href="{% static 'css/part.css' %}" />
-  </head>
-  <body>
-    <h1>Item</h1>
-    <nav>
-      <div class="user-info">
-        {% if user.is_authenticated %} Welcome, {{ user.username }}
-        <a href="{% url 'logout' %}">Log out</a>
-        {% else %}
-        <a href="{% url 'login' %}">Login</a>
-        <a href="{% url 'signup' %}">Signup</a>
-        {% endif %}
-      </div>
-      <a href="/item_parts">Item_parts</a>
-      <a href="/">Items</a>
-    </nav>
-    {% block content %} {% endblock %}
-  </body>
+
+<head>
+  <title>Item</title>
+  <link rel="stylesheet" href="{% static 'css/part.css' %}" />
+</head>
+
+<body>
+  <h1>Item</h1>
+  <nav>
+    <div class="user-info">
+      {% if user.is_authenticated %} Welcome, {{ user.username }}
+      <a href="{% url 'logout' %}">Log out</a>
+      {% else %}
+      <a href="{% url 'login' %}">Login</a>
+      <a href="{% url 'signup' %}">Signup</a>
+      {% endif %}
+    </div>
+    <a href="/item_parts">Item_parts</a>
+    <a href="/">Items</a>
+  </nav>
+  {% block content %} {% endblock %}
+</body>
+
 </html>

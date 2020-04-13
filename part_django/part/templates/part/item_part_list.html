@@ -1,15 +1,12 @@
 {% extends 'part/base.html' %} 
 {% block content %}
 <h2>Item_parts </h2>
-<ul>
-  {% for item_part in item_parts %}{% for item in items %}
-  <li>
+  <ul>
+    {% for item_part in item_parts %}
+    <li>
     <a href="{% url 'item_part_detail' pk=item_part.pk %}">
-      Item:&nbsp; {{ item.name }}
-      <br></br>
       Name:&nbsp;{{ item_part.name }}
-
-  </li>
-  {% endfor %}{% endfor %}
+    </li>
+  {% endfor %}
 </ul>
 {% endblock %}

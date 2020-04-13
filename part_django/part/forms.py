@@ -12,7 +12,7 @@ class Item_partForm(forms.ModelForm):
 
     class Meta:
         model = Item_part
-        fields = ('name', 'number', 'notes',)
+        fields = ('name', 'number', 'notes')
 
 
 

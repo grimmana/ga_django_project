@@ -1,14 +1,12 @@
 <!-- part/item_detail.html -->
-<h2>{{ item.name }} <a href="{% url 'item_edit' pk=item.pk %}">(edit)</a></h2>
-<div>
-  <a href="{% url 'item_delete' pk=item.pk %}">DELETE</a>
-  </div>
-<h3>Item_parts <a href="{% url 'item_part_create' %}">(+)</a></h3>
-
-<ul>
-  {% for item_part in item.item_parts.all %}
-  <li>
-    <a href="{% url 'item_part_detail' pk=item_part.pk %}">{{ item_part.name }}</a>
-  </li>
-  {% endfor %}
-</ul>
+{% extends 'part/base.html' %} {% block content %}
+<h2>{{ item.name }} <a href="{% url 'item_edit' pk=item.pk %}">(edit-item)</a><a href="{% url 'item_delete' pk=item.pk %}">(DELETE-item)</a></h2>
+  <h3>Item_parts <a href="{% url 'item_part_create' %}">(+)</a> </h3>
+    <ul>
+       {% for item_part in item.item_parts.all %}
+        <li>
+          <a href="{% url 'item_part_detail' pk=item_part.pk %}">{{ item_part.name }}</a>
+        </li>
+    {% endfor %}
+    </ul>
+  {% endblock %}

@@ -40,7 +40,7 @@ def item_part_create(request):
     if request.method == 'POST':
         form = Item_partForm(request.POST)
         if form.is_valid():
-            item_part = form.save()
+            item = form.save()
             return redirect('item_part_detail', pk=item_part.pk)
     else:
         form = Item_partForm()

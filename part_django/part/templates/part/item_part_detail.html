@@ -1,12 +1,12 @@
-
+{% extends 'part/base.html' %} {% block content %}
 <h2>{{ item_part.name }} <a href="{% url 'item_part_edit' pk=item_part.pk %}">(edit)</a></h2>
-<h3>For: {{ item_part.item.name }}</h3>
-<h4>
-  Number:&nbsp;{{ item_part.number }}
-  <br></br>
-  Notes:&nbsp;{{ item_part.notes }}
-</h4>
-
-<div>
+    <h3>For: {{ item_part.item.name }}</h3>
+      <h4>
+        Number:&nbsp;{{ item_part.number }}
+        <br></br>
+        Notes:&nbsp;{{ item_part.notes }}
+      </h4>
+    <div>
     <a href="{% url 'item_part_delete' pk=item_part.pk %}">DELETE</a>
   </div>
+{% endblock %}
