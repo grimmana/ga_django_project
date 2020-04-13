@@ -190,7 +190,7 @@ You should see a page welcoming you to Django!
 Create the class and add the fields and define the default method in: part_django/part/models.py
 
 ```python
-# part_django/part/models.py
+# part/models.py
 class Item(models.Model):
     name = models.CharField(max_length=100)
     ident = models.CharField(max_length=100)
@@ -222,7 +222,7 @@ add additional fields and then define a default method in part_django/part/model
 (below the existing class Item):
 
 ```python
-# part_django/part/models.py
+# part/models.py
 
 class Item(models.Model):
     name = models.CharField(max_length=100)
@@ -331,7 +331,7 @@ Then, in `part_django/part_django/settings.py` find the `INSTALLED_APPS` list.
 Add `django_extensions` to the bottom of this section.
 
 ```py
-# part_django/part_django/settings.py
+# part_django/settings.py
 # Application definition
 
 INSTALLED_APPS = [
@@ -371,10 +371,12 @@ python3 manage.py shell_plus --ipython
 
 # Django Views & Templates
 
+# View Functions
+
 Create the Item and Item_part views in /part_jdango/part/views.py: 
 
 ```python
-# /part_jdango/part/views.py
+# part/views.py
 from django.shortcuts import render
 from .models import Item, Item_part
 
@@ -392,7 +394,7 @@ def item_part_list(request):
 Edit /part_jdango/part_jdango/urls.py: Add to the first line import - `include` 
 
 ```python
-# part_django/part_django/urls.py
+# part_django/urls.py
 from django.conf.urls import include
 from django.urls import path
 from django.contrib import admin
@@ -406,7 +408,7 @@ urlpatterns = [
 Create file /part_jdango/part/urls.py that contains the app path, so that it looks like:
 
 ```python
-# /part_django/part/urls.py
+# part/urls.py
 from django.urls import path
 from . import views
 
@@ -426,7 +428,7 @@ In this path /part_django/part/templates/part/: add a new file
 `item_list.html` with the following code:
 
 ```html
-<!-- /part_django/part/templates/part/item_list.html -->
+<!-- part/item_list.html -->
 <h2>Items <a href="">(+)</a></h2>
 <ul>
   {% for item in items %}
@@ -437,19 +439,8 @@ In this path /part_django/part/templates/part/: add a new file
 </ul>
 ```
 
-Ensure the server is currently running or start the server:
-
-```
-python3 manage.py runserver 8000
-```
-Check the following paths in the browser
-on the webpage you should see the list of Items and 
-
-`localhost:8000`  Items
-`http://localhost:8000/item_parts/` Items_parts
-
-
-In this path /part_django/part/templates/part/: add a new file
+In this path /part_django/part/templates/part/: 
+add a new file
 `item_part_list.html` with the following code:
 
 ```html
@@ -463,3 +454,120 @@ In this path /part_django/part/templates/part/: add a new file
 </ul>
 ```
 
+Ensure the server is currently running or start the server:
+
+```
+python3 manage.py runserver 8000
+```
+Check the following paths (listed in 
+/part_django/part/urls.py) in the browser,
+on the webpage you should see the lists of: 
+
+`localhost:8000`  Items
+`http://localhost:8000/item_parts/` Items_parts
+
+# Item Detail/Show pages
+
+Item detail
+View: in the /part_django/part/views.py file, add the following code:
+
+```python
+# part/views.py
+def item_detail(request, pk):
+    item = Item.objects.get(id=pk)
+    return render(request, 'part/item_detail.html', {'item': item})
+```
+
+Item detail
+URL: in the /part_django/part/urls.py file, add the following code:
+
+```python
+# part/urls.py
+path('items/<int:pk>', views.item_detail, name='item_detail'),
+```
+
+Item detail
+TEMPLATE: in this path /part_django/part/templates/part/: 
+add a new file `item_detail.html` with the following code:
+
+```html
+<!-- part/item_detail.html -->
+<h2>{{ item.name }} <a href="">(edit)</a></h2>
+
+<h3>Item_parts <a href="">(+)</a></h3>
+<ul>
+  {% for item_parts in item.item_parts.all %}
+  <li>
+    <a href="">{{ item_part.name }}</a>
+  </li>
+  {% endfor %}
+</ul>
+```
+
+Item detail
+HTML/HREF: Go back and add hrefs between the li tags in: part/templates/part/item_list.html
+
+```html
+<!-- part/item_list.html -->
+<a href="{% url 'item_detail' pk=item.pk %}">
+  {{ item.name }}
+</a>
+```
+
+# Item_part Detail/Show pages
+
+Item_part detail
+View: in the /part_django/part/views.py file, add the following code:
+
+```python
+# part/views.py
+def item_part_detail(request, pk):
+    item_part = Item_part.objects.get(id=pk)
+    return render(request, 'part/item_part_detail.html', {'item_part': item_part})
+```
+
+Item_part detail
+URL: in the /part_django/part/urls.py file, add the following code:
+
+```python
+# part/urls.py
+path('item_parts/<int:pk>', views.item_part_detail, name='item_part_detail')
+```
+
+Item_part detail 
+TEMPLATE: in this path /part_django/part/templates/part/: 
+add a new file `item_part_detail.html` with the following code:
+
+```html
+<h2>{{ item_part.name }} <a href="">(edit)</a></h2>
+<h3>By: {{ item_part.item.name }}</h3>
+```
+
+Switch to: Item detail 
+HTML/HREF: Go back and add hrefs between the li tags in: /part_django/part/templates/part/item_detail.html
+
+```html
+<a href="{% url 'item_part_detail' pk=item_part.pk %}">
+  {{ item_part.name }}
+</a>
+```
+
+Switch to: Item_part list
+HTML/HREF: Go back and add hrefs between the li tags in: /part_django/part/templates/part/item_part_listl.html
+
+```html
+<a href="{% url 'item_part_detail' pk=item_part.pk %}">
+  {{ item_part.name }}
+</a>
+```
+Ensure the server is currently running or start the server:
+
+```
+python3 manage.py runserver 8000
+```
+Check the following paths (listed in 
+/part_django/part/urls.py) in the browser,
+on the webpage you should see the lists of: 
+
+`localhost:8000`  Items
+`http://localhost:8000/item_parts/` Items_parts

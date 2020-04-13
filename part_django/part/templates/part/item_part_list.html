@@ -2,7 +2,7 @@
 <ul>
   {% for item_part in item_parts %}
   <li>
-    <a href="">{{ item_part.name }}</a>
+    <a href="{% url 'item_part_detail' pk=item_part.pk %}">{{ item_part.name }}</a>
   </li>
   {% endfor %}
 </ul>
