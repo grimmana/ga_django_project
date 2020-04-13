@@ -49,3 +49,14 @@ def item_edit(request, pk):
     else:
         form = ItemForm(instance=item)
     return render(request, 'part/item_form.html', {'form': form}) 
+
+def item_part_edit(request, pk):
+    item_part = Item_part.objects.get(pk=pk)
+    if request.method == "POST":
+        form = Item_partForm(request.POST, instance=item_part)
+        if form.is_valid():
+            item_part = form.save()
+            return redirect('item_part_detail', pk=item_part.pk)
+    else:
+        form = Item_partForm(instance=item_part)
+    return render(request, 'part/item_part_form.html', {'form': form})
