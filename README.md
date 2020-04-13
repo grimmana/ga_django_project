@@ -2,28 +2,23 @@
 Project Link: GitHub- https://github.com/grimmana/ga_django_project
 
 # Project Description:
-This application allows users to store part number information for their various possessions. 
+This application allows users to store part number information for their various possessions and is based on the tunr and nostalja and authentication documents.
 
 Features:
 - Have two related models.
 - Implement Full CRUD throughout the application
 - Utilizes user authentication and routes that require login for access.
 
-
 Technologies used:
 Django
 GitHub
 Python
-SQL
 PostgreSQL
 NodeJS
 Virtual environments
-WireFrame
 
-Deployment to Heroku 
-Code Snippet:
-Issues and resolutions:
-Contribute
+Issues and resolutions: foreign key error when adding an item in the form with the foreign key.
+
 ## Additional Resources
 
 - [GA Docs: Django models](https://git.generalassemb.ly/jdr-0127/django-models)
